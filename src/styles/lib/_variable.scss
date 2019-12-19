@@ -1,0 +1,42 @@
+// color -----------------------
+// $brand-primary: #2b2b28;
+// $brand-secondary: #d1274b;
+// $brand-tertiary: #f66767;
+// $brand-quaternary: #fff4e4;
+
+// color -----------------------
+$brand-primary: #0e204a;
+$brand-secondary: #2b536b;
+$brand-tertiary: #518489;
+$brand-quaternary: #5d542d;
+
+$main-background: #454545;
+$sub-background: $oc-gray-3;
+
+$symptom-color: #94BDFF;
+$lab-color: #FC9595;
+$condition-color: #C5A1FF;
+$exam-color: #FFF1A5;
+$drug-color: #9DFFC4;
+$reference-color: #FFAA72;
+
+$gray-1: $oc-gray-2;
+$gray-2: $oc-gray-4;
+$gray-3: $oc-gray-5;
+$gray-4: $oc-gray-7;
+
+$delete: $oc-red-6;
+
+$error: $oc-red-8;
+
+// size ------------------------
+$header-height: 60px;
+$screen-width: 1366px;
+$screen-md-width: 768px;
+$container-width: 1277px;
+
+// z-index ---------------------
+$drawer-z-index: 1003;
+$header-z-index: 1010;
+$topbar-z-index: 1020;
+$main-container-z-index: 1000;

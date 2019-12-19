@@ -1,0 +1,62 @@
+.Page404 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-width: 100%;
+
+    .container {
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .content {
+        margin: 0;
+        font-size: 6em;
+        font-weight: bold;
+        line-height: 0.85;
+        letter-spacing: -0.05em;
+        text-transform: uppercase;
+    
+        span {
+            display: block;
+            word-wrap: break-word;
+    
+            &.error-state {
+                font-size: 1.5em;
+            }
+        }
+    }
+    
+    .links {
+        color: #666;
+        margin: 4em 0 0;
+    
+        a {
+            font-size: 1.5em;
+            color: #666;
+            text-decoration: underline;
+            transition: all 0.3s;
+    
+            &:first-child {
+                font-weight: bold;
+            }
+    
+            &:not(:first-child) {
+                margin-left: .6em;
+            }
+            &:hover {
+                letter-spacing: 2px;
+            }
+        }
+    }
+    
+    @media (max-width: 720px) {
+        .hero {
+            font-size: 4em;
+        }
+    }
+}
+

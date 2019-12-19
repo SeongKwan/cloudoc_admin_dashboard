@@ -1,0 +1,42 @@
+.Layout {
+    position: relative;
+    min-height: 100%;
+
+    .cover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        background-color: rgba(black, 0.3);
+    }
+    .header-container {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        color: $oc-gray-2;
+        height: 6rem;
+        width: 100%;
+        background-color: black;
+        top: 0;
+        left: 0;
+        z-index: $header-z-index;
+    }
+    .main-container {
+        width: 100%;
+        min-height: 100%;
+        background-image: url('../../styles/img/static_background.jpeg');
+        background-size: cover;
+        background-position: 0 100%;
+        background-repeat: no-repeat;
+        $main-container-z-index: 1000;
+    }
+
+    .footer-container {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        padding: 3rem 4rem;
+    }
+}

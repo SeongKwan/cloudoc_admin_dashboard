@@ -1,0 +1,43 @@
+@import './resetCSS';
+@import './loader';
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,700&display=swap');
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+/* 반응형 분기점
+    'xs': 576px,
+    'sm': 768px, 
+    'md': 1024px, 
+    'lg': 1411px, 
+    'xl': 1601px
+*/
+
+
+html {
+    font-size: 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    
+    @include media('xl') {
+        font-size: 15px;
+    }
+    @include media('lg') {
+        font-size: 13px;
+    }
+    @include media('md') {
+        font-size: 12px;
+    }
+    @include media('sm') {
+        font-size: 11px;
+    }
+}
+
+body {
+    position: relative;
+    box-sizing: border-box;
+}

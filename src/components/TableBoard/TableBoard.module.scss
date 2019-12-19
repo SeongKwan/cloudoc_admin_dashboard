@@ -1,0 +1,233 @@
+.TableBoard {
+    margin-top: 4rem;
+    position: relative;
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    .search-bar {
+        width: 35%;
+        max-width: 500px;
+        position: absolute;
+        top: -4rem;
+        background-color: #F6F6F6;
+        border-radius: 8px;
+        span {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #727272ee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.35rem;
+            &.search {
+                padding: 1rem;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            &.clear-search-keyword {
+                display: none;
+                right: 1rem;
+                &.keyword {
+                    display: inline;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+        label {
+            display: none;
+        }
+        input {
+            width: 20%;
+            border-radius: 8px;
+            border: 1px solid #f1f1f1ee;
+            padding: 0.75rem 1rem;
+            padding-left: 3rem;
+            transition: all 0.4s cubic-bezier(0.17, 0.04, 0.03, 0.94);
+            box-shadow: 0 2px 20px -2px rgba(black, 0.2);
+            &:focus, &.keyword, &:hover {
+                width: 100%;
+                outline: none;
+            }
+        }
+    }
+    .section-filter-button {
+        position: absolute;
+        right: 0;
+        top: -4rem;
+        ul {
+            display: flex;
+            li {
+                &:not(:last-child) {
+                    margin-right: 0.5rem;
+                }
+                button {
+                    font-size: 1.3rem;
+                    border-radius: 8px;
+                    border: none;
+                    box-shadow: 0 2px 15px -2px rgba(black, 0.2);
+                    padding: 0.5rem 1rem;
+                    color: $main-background;
+                    font-weight: 100;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    &:hover {
+                        transform: translateY(-3px);
+                    }
+                    &.symptom {background-color: $symptom-color;}
+                    &.lab {background-color: $lab-color;}
+                    &.condition {background-color: $condition-color;}
+                    &.exam {background-color: $exam-color;}
+                    &.drug {background-color: $drug-color;}
+                    &.reference {background-color: $reference-color;}
+                    &:focus {outline: none;}
+                    &.without {
+                        background-color: white;
+                        color: #aaaaaaee;
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+    }
+    .table-header {
+        display: flex;
+        .table-header-data {
+            flex: 1;
+            padding: 1rem 1rem;
+            background-color: $main-background;
+            color: white;
+            font-weight: 700;
+            &:first-child {
+                border-top-left-radius: 8px;
+                // flex: 0.3;
+            }
+            &.2 {
+                flex: 0.5;
+            }
+            &.3 {
+                @include media('lg') {
+                    flex: 0.7;
+                }
+            }
+            &.4, &.5 {
+                flex: 0.7;
+            }
+            &:last-child {
+                flex: 0.2;
+                border-top-right-radius: 8px;
+            }
+        }
+    }
+    .table-body {
+        margin-bottom: 0;
+        &.isLoading {
+            padding: 8rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .no-results {
+            text-align: center;
+            padding: 8rem 0;
+            span {
+                text-decoration: underline;
+                font-weight: 700;
+            }
+        }
+        li {
+            display: flex;
+            background-color: white;
+            border-bottom: 1px solid #e4e4e4;
+            &:hover {
+                cursor: pointer;
+                background-color: #f6f6f6;
+                div {
+                    font-weight: 700;
+                }
+            }
+            div {
+                font-weight: 100;
+                flex: 1;
+                padding: 1rem 1rem;
+                color: $main-background;
+                &.table-body-data--name {
+                    word-wrap: none;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                &:nth-child(2) {
+                    flex: 0.5;
+                }
+                &:nth-child(3) {
+                    @include media('lg') {
+                        flex: 0.7;
+                    }
+                }
+                &:nth-child(4), &:nth-child(5) {
+                    flex: 0.7;
+                }
+                &:last-child {
+                    flex: 0.2;
+                }
+            }
+        }
+    }
+    .pagination {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        button {
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 42px;
+            height: 42px;
+            border: 1px solid #e4e4e4;
+            font-weight: 100;
+            @include media('lg') {
+                width: 32px;
+                height: 32px;
+            }
+            &:hover {
+                cursor: pointer;
+                background-color: #f6f6f6;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+        li {
+            &:not(:last-child) {
+                margin-right: 2px;
+            }
+            &.active {
+                button {
+                    background-color: $main-background;
+                    color: white;
+                    font-weight: 700;
+                }
+            }
+            &.disabled {
+                button:disabled {
+                    &:hover {
+                        cursor: not-allowed;
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+}

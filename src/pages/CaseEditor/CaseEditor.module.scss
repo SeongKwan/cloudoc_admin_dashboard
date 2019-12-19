@@ -1,0 +1,21 @@
+.CaseEditor {
+    padding: 2rem;
+    font-size: 2rem;
+    button {
+        font-size: 0.7em;
+        padding: 0.3rem;
+        &:hover {
+            cursor: pointer;
+        }
+        &:first-child {
+            margin: 0 1rem;
+        }
+    }
+    .wrapper-caselist {
+        margin-top: 1rem;
+        li {
+            font-size: 0.7em;
+            letter-spacing: 2px;
+        }
+    }
+}

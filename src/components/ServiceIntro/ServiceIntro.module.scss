@@ -1,0 +1,55 @@
+.ServiceIntro {
+    position: relative;
+    .container {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+        width: 100%;
+        min-height: 100vh;
+        position: relative;
+        background-color: rgba(black, 0.5);
+        .jumbotron {
+            background-color: transparent;
+            padding: 10rem;
+            color: white;
+            margin-bottom: 0;
+            z-index: 9990;
+            letter-spacing: 2px;
+            @include media('xs') {
+                padding: 6rem 2rem;
+
+            }
+        }
+    }
+    .top-wrapper {
+        margin-bottom: 2rem;
+        h1 {
+            margin-bottom: 1rem;
+        }
+    }
+    .bottom-wrapper {
+        .col {
+            display: flex;
+            // justify-content: center;
+            .btn-login {
+                transition: all 0.2s;
+                padding: 0.7rem 1.2rem;
+                border-radius: 0.25rem;
+                color: white;
+                background-color: black;
+                letter-spacing: 2px;
+                &:hover {
+                    background-color: $oc-gray-9;
+                    text-decoration: none;
+                }
+                @include media('xs') {
+                    padding: 1.25rem 1.25rem;
+                }
+            }
+        }
+    }
+    p {
+        position: absolute;
+        right: 2%;
+        bottom: 2%;
+    }
+}
