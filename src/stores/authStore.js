@@ -1,5 +1,6 @@
 import { observable, action, reaction } from 'mobx';
 import agent from '../utils/agent';
+import loginStore from './loginStore';
 
 class AuthStore {
     @observable token = window.localStorage.getItem('token');
@@ -7,6 +8,7 @@ class AuthStore {
     @observable email = window.localStorage.getItem('email');
     @observable username = window.localStorage.getItem('username');
     @observable user_id = window.localStorage.getItem('user_id');
+    @observable authError = false;
 
     constructor() {
         this._initTokenAndUuidWithLocalStorage();
@@ -95,13 +97,21 @@ class AuthStore {
 
     @action validateToken() {
         return agent.validateToken()
-        .then((response) => {
-            
+        .then(action((response) => {
+            if (!response.data) {
+                loginStore.logout('expiredRefreshToken');
+                alert("로그인 시간이 만료되었습니다. 다시 로그인하여 주세요.")
+                window.location.href = "http://localhost:3000";
+            }
             return response.data;
-        })
+        }))
         .catch((error) => {
             throw error;
         })
+    }
+
+    @action clearAuthError() {
+        this.authError = false;
     }
     
 }

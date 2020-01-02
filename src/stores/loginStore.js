@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, reaction } from 'mobx';
 import authStore from './authStore';
 import userStore from './userStore';
 import agent from '../utils/agent';
@@ -15,8 +15,35 @@ class LoginStore {
         noIdValue: false,
         noPasswordValue: false,
         inputError: false
-    }
+    };
+    @observable rememberMe = window.localStorage.getItem('rememberMe');
+    @observable rememberID = window.localStorage.getItem('rememberID');
 
+    constructor() {
+        this._initRememberMeID();
+
+        reaction(
+            () => this.rememberMe,
+            rememberMe => {
+                if (rememberMe) {
+                    window.localStorage.setItem('rememberMe', rememberMe);
+                } else {
+                    window.localStorage.removeItem('rememberMe');
+                }
+            }
+        );
+        reaction(
+            () => this.rememberID,
+            rememberID => {
+                if (rememberID) {
+                    window.localStorage.setItem('rememberID', rememberID);
+                } else {
+                    window.localStorage.removeItem('rememberID');
+                }
+            }
+        );
+    }
+    
     @computed get isLoggedIn() {
         const token = window.localStorage.getItem('token') || null;
         if (token) {
@@ -26,6 +53,38 @@ class LoginStore {
             return true;
         }
         return false;
+    }
+
+    _initRememberMeID() {
+        if (this.rememberMe) {
+            this.setRememberMeID(this.rememberMe);
+        }
+    }
+
+    @action setRememberMeID(rememberMe) {
+        this.rememberMe = rememberMe;
+    }
+    
+    @action changeRememberMe() {
+        if (this.rememberMe === 'true') {
+            this.destroyRememberID();
+            return this.rememberMe = 'false';
+        }
+        if (this.rememberMe === 'false') {
+            return this.rememberMe = 'true';
+        }
+    }
+    @action setRememberID(email) {
+        if (this.rememberMe === 'true') {
+            return this.rememberID = email;
+        }
+        if (this.rememberMe === 'false') {
+            return this.destroyRememberID();
+        }
+    }
+
+    @action destroyRememberID() {
+        this.rememberID = undefined;
     }
 
     @action changeInput(key, value) {

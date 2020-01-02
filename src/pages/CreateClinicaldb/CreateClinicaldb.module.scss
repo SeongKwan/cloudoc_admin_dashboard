@@ -1,0 +1,45 @@
+.CreateClinicaldb {
+    @include layout;
+    .section-filter-button {
+        flex: 100%;
+        margin-bottom: 1rem !important;
+        ul {
+            display: flex;
+            li {
+                &:not(:last-child) {
+                    margin-right: 0.5rem;
+                }
+                button {
+                    height: 50px;
+                    font-size: 1.3rem;
+                    border-radius: 8px;
+                    border: none;
+                    box-shadow: 0 2px 15px -2px rgba(black, 0.2);
+                    padding: 0.5rem 1rem;
+                    color: $main-background;
+                    font-weight: 100;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    @include media('lg') {
+                        height: 38px;
+                    }
+                    &:hover {
+                        transform: translateY(-3px);
+                    }
+                    &.symptom {background-color: $symptom-color;}
+                    &.lab {background-color: $lab-color;}
+                    &.condition {background-color: $condition-color;}
+                    &.exam {background-color: $exam-color;}
+                    &.drug {background-color: $drug-color;}
+                    &.reference {background-color: $reference-color;}
+                    &:focus {outline: none;}
+                    &.without {
+                        background-color: white;
+                        color: #aaaaaaee;
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+    }
+}

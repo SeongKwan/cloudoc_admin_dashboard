@@ -36,7 +36,7 @@ class ClinicalDB extends Component {
       <LayoutWithSidebar>
         <div className={cx('ClinicalDB')}>
           <Helmet>
-              <title>Cloudoc Admin - Clinical DB</title>
+              <title>Cloudoc Admin - 임상정보</title>
           </Helmet>
           <section className={cx('title')}>
             <h2>에디터 - 임상정보</h2>

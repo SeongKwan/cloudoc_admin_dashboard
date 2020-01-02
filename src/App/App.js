@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { inject, observer } from 'mobx-react';
 import styles from './App.module.scss';
 import classNames from 'classnames/bind';
 import Routes from './components/Routes';
 
 const cx = classNames.bind(styles);
 
+@inject('auth', 'login')
+@observer
 class App extends Component {
   render() {
     return (

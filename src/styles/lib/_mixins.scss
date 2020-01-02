@@ -60,3 +60,30 @@ $breakpoints: (
         @warn "Unknown `#{$size}` in $breakpoints";
     }
 }
+
+@mixin layout {
+    h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        user-select: none;
+    }
+    h6 {
+        margin-top: 0.5rem;
+        margin-left: 0.5rem;
+        font-weight: 100;
+        font-size: 0.9rem;
+        color: #6d6d6d;
+        user-select: none;
+    }
+    section.flexbox-content {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 5rem;
+        & > div:not(:last-child) {
+            margin-right: 1rem;
+        }
+        & > div {
+            margin-bottom: 3rem;
+        }
+    }
+}

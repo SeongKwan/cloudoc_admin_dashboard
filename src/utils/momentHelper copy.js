@@ -55,7 +55,4 @@ class MomentHelper {
 }
 
 const momentHelper = new MomentHelper();
-
-console.log(momentHelper.getLocaleDateWithYYYY(new Date()));
-
 export default momentHelper;

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames/bind';
 import styles from './TableBoard.module.scss';
 import Loader from '../Loader';
 import moment from 'moment';
-import 'moment-timezone';
 import { FiChevronLeft, FiChevronsLeft, FiChevronsRight, FiChevronRight, FiSearch, FiX } from "react-icons/fi";
 
 const cx = classNames.bind(styles);
 
+@withRouter
 @inject('table', 'search', 'clinicaldb')
 @observer
 class TableBoard extends Component {
@@ -17,12 +18,16 @@ class TableBoard extends Component {
         searchKeyword: ''
     }
     componentDidMount() {
+        this.setState({ searchKeyword: this.props.search.keyword.clinicaldb })
         this.props.table.setPage(1, this.props.contents);
     }
     componentDidUpdate(prevProps) {
         if (prevProps.contents !== this.props.contents) {
             return this.props.table.setPage(1, this.props.contents);
         } else return null
+    }
+    componentWillUnmount() {
+        this.handleClearKeyword();
     }
     getLocaleFullDateWithTime = (_datetime) => {
         return moment(_datetime).tz(moment.tz.guess()).format("YYYY/MM/DD HH:mm:ss")
@@ -39,6 +44,13 @@ class TableBoard extends Component {
         this.setState({ searchKeyword: '' });
         this.props.search.clearKeyword();
     }
+    createClinicaldb = () => {
+        this.props.history.push('/clinicaldb/create');
+    }
+    handleClickOnListItem = ({category, _id, section}) => {
+        this.handleClearKeyword();
+        this.props.history.push(`/${category}/${section}/${_id}`);
+    }
     render() {
         const { 
             currentPage, 
@@ -48,6 +60,7 @@ class TableBoard extends Component {
             filter 
         } = this.props.table;
         const { isLoading } = this.props;
+        const category = this.props.location.pathname.split("/")[1];
         
         return (
             <div className={cx('TableBoard')}>
@@ -71,6 +84,7 @@ class TableBoard extends Component {
                     <span className={cx('clear-search-keyword', {keyword: this.state.searchKeyword.length > 0})} onClick={this.handleClearKeyword}>
                         <FiX />
                     </span>
+                    <div onClick={this.createClinicaldb} className={cx('button-create')}>생성 +</div>
                 </div>
                 <div className={cx('section-filter-button')}>
                     <ul>
@@ -92,7 +106,7 @@ class TableBoard extends Component {
                             let formatedCreatedDate = this.getLocaleFullDateWithTime(created_date) || '-';
                             let formatedUpdatedDate = this.getLocaleFullDateWithTime(updated_date) || '-';
                             let sectionKR = this.props.clinicaldb.translateSection(section);
-                                return <li key={i}>
+                                return <li key={i} onClick={() => {this.handleClickOnListItem({category, _id, section})}}>
                                     {/* <div>#{upperLimit - rowSize + i + 1}</div> */}
                                     <div>{_id}</div>
                                     <div>{sectionKR}</div>

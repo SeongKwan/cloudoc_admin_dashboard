@@ -15,6 +15,7 @@ const menus = [
   {title: '컨설팅', url: `/user`, icon: <FiInfo />},
   {title: '문의내역', url: `/cs`, icon: <FiHelpCircle />},
 ];
+let timer = null;
 @withRouter
 @inject(
   'auth',
@@ -27,11 +28,22 @@ class LayoutWithSidebar extends Component {
   state = {
     openDropdown: false
   }
+
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
+    
+    timer = setInterval(() => {
+      this.checkToken();
+    }, 3600000)
   }
+  
   componentWillUnmount() {
-      document.removeEventListener('mousedown', this.handleClickOutside);
+    clearInterval(timer);
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  checkToken = () => {
+    this.props.auth.validateToken();
   }
 
   handleClickOutside = (event) => {
@@ -44,9 +56,13 @@ class LayoutWithSidebar extends Component {
   }
   render() {
     const { children } = this.props;
+    const category = this.props.location.pathname.split("/")[1];
     
     return (
       <div className={cx('LayoutWithSidebar')}>
+        {/* <div className={cx('db-search-panel-container')}>
+          
+        </div> */}
         <div className={cx('sidebar-container')}>
           <div>
             <div className={cx('brand-logo')}>
@@ -56,7 +72,7 @@ class LayoutWithSidebar extends Component {
             <ul className={cx('list-menus')}>
               {menus.map((menu, i) => {
                 const { title, url, icon } = menu;
-                const active = this.props.location.pathname === url;
+                const active = category === url.split("/")[1];
                 return <li key={i}>
                   <NavLink
                     className={cx({active})}

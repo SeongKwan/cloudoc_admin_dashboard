@@ -5,6 +5,8 @@ import {
     Redirect
 } from 'react-router-dom';
 import ClinicalDB from '../../pages/ClinicalDB';
+import CreateClinicaldb from '../../pages/CreateClinicaldb';
+import DetailClinicaldb from '../../pages/DetailClinicaldb';
 import Page404 from '../../pages/Page404';
 import {
     BrowserView,
@@ -30,8 +32,14 @@ const Routes = () => {
                     <Route exact path="/">
                         <Redirect to="/clinicaldb" />
                     </Route>
-                    <Route path="/clinicaldb">
+                    <Route exact path="/clinicaldb">
                         <ClinicalDB />
+                    </Route>
+                    <Route path="/clinicaldb/create">
+                        <CreateClinicaldb />
+                    </Route>
+                    <Route path={`/clinicaldb/:section/:id`}>
+                        <DetailClinicaldb />
                     </Route>
                     <Route>
                         <Page404 />

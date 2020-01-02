@@ -15,6 +15,21 @@ const cx = classNames.bind(styles);
 @inject('user', 'login')
 @observer
 class Login extends Component {
+  componentDidMount() {
+    const { rememberMe, rememberID } = this.props.login;
+    if ( rememberMe === null || rememberMe === undefined || rememberMe === '' ) {
+      window.localStorage.setItem('rememberMe', 'false');
+    }
+    if (rememberMe === "true") {
+      if (rememberID !== null && rememberID !== undefined && rememberID !== '') {
+        return this.props.login.changeInput('email', rememberID);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
   componentWillUnmount() {
     this.props.login.clearInputValuesForLogin();
     this.props.login.clearErrorValues();
@@ -24,14 +39,23 @@ class Login extends Component {
     this.props.login.changeInput(e.target.name, e.target.value);
     login.errorHandle({email: false, password: false, input: true});
   }
+  _handleChangeRememberMe = () => {
+    this.props.login.changeRememberMe();
+  }
 
   _handleClick = (e) => {
     e.preventDefault();
+    const { rememberMe } = this.props.login;
     const { email, password } = this.props.login.inputValuesForLogin;
     const { login } = this.props;
     if (email.length > 0 && password.length > 0) {
       return this.props.login.login()
       .then((res) => {
+        if (rememberMe === 'true') {
+          this.props.login.setRememberID(email);
+        } else {
+          this.props.login.setRememberID(undefined);
+        }
         return this.props.history.replace('/clinicaldb');
       })
       .catch(err => {
@@ -50,6 +74,7 @@ class Login extends Component {
     const { noIdValue, noPasswordValue, inputError } = this.props.login.errorValues;
     const { isLoading } = this.props.login;
     let error = noIdValue || noPasswordValue || inputError;
+    let remember = this.props.login.rememberMe === 'true';
 
     return (
       <Layout>
@@ -71,14 +96,14 @@ class Login extends Component {
                         as='input'
                         className={cx('input-form', {isLoading})} 
                         readOnly={isLoading} 
-                        autoFocus 
+                        autoFocus={remember ? false : true} 
                         name='email' 
                         type="email" 
                         placeholder="이메일" 
                         value={email} 
                         onChange={this._handleChange}/>
                     </Form.Group>
-                    <Form.Group controlId="form-basic-password">
+                    <Form.Group className={cx('form-group', 'password')} controlId="form-basic-password">
                       <Form.Label className={cx('input-label')}>Password</Form.Label>
                       <span className={cx('input-icon')}>
                         <FiLock />
@@ -87,12 +112,24 @@ class Login extends Component {
                         as='input'
                         className={cx('input-form', {isLoading})} 
                         readOnly={isLoading} 
+                        autoFocus={remember ? true : false} 
                         type="password" 
                         name ='password' 
                         placeholder="비밀번호" 
                         value={password} 
                         onChange={this._handleChange}/>
                     </Form.Group>
+                    <fieldset className={cx('remember')}>
+                      <input 
+                          onChange={this._handleChangeRememberMe}
+                          id="rememberMe"
+                          name="rememberme"
+                          type="checkbox"
+                          checked={remember} 
+                          style={{marginRight: '0.4rem'}}
+                      />
+                      <label htmlFor="rememberMe">이메일 기억하기</label>
+                    </fieldset>
                     {
                       error && 
                       <div className={cx('container-error', {isLoading})}>

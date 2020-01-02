@@ -20,7 +20,7 @@ class TableStore {
     @observable lastPage = null;
     @observable originalContents = [];
     @observable upperLimit = 0;
-    @observable rowSize = 10;
+    @observable rowSize = 20;
     @observable pages = [];
     @observable startPage = null;
     @observable endPage = null;
@@ -93,6 +93,7 @@ class TableStore {
     }
 
     @action clearFilter() {
+        
         this.filter = {
             symptom: true,
             lab: true,

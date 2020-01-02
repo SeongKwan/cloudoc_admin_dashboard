@@ -53,6 +53,9 @@
                     flex-direction: column;
                     align-items: center;
                     position: relative;
+                    .form-group.password {
+                        margin-bottom: 0.5rem;
+                    }
                     .login-button {
                         width: 380px;
                         height: 48px;
@@ -112,9 +115,16 @@
                             height: 40px;
                         }
                     }
+                    fieldset {
+                        width: 280px;
+                        color: rgb(195, 195, 195);
+                        font-size: 0.8rem;
+                        font-weight: 100;
+                        padding-left: 8px;
+                    }
                     .container-error {
                         position: absolute;
-                        bottom: 6.5rem;
+                        bottom: 5.8rem;
                         font-size: 0.5rem;
                         color: white;
                         padding: 0.2rem 0.4rem;
@@ -126,7 +136,7 @@
                             display: none;
                         }
                         @include media('lg') {
-                            bottom: 6.5rem;
+                            bottom: 5.8rem;
                         }
                     }
                 }

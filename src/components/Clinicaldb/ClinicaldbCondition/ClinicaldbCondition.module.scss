@@ -1,0 +1,183 @@
+.ClinicaldbCondition {
+    @include layout;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    box-shadow: 0 1px 20px -2px rgba(black, 0.2);
+    border-radius: 8px;
+    background-color: white;
+    .wrapper {
+        display: flex;
+        &:not(:last-child) {
+            margin-bottom: 2rem;
+        }
+        .title {
+            flex: 2;
+            font-weight: 700;
+            padding: 8px 10px;
+            @include media('lg') {
+                flex: 3;
+            }
+        }
+        input.content, .content, select, textarea {
+            padding: 8px 10px;
+            border: 1px solid #e7e7e7;
+            border-radius: 8px;
+            font-weight: 100;
+            width: 100%;
+            flex: 8;
+            transition: all ease 0.3s;
+            &.detail {
+                display: flex;
+                flex-direction: column;
+                ul {
+                    margin-bottom: 0;
+                }
+                li {
+                    position: relative;
+                    display: flex;
+                    padding: 12px 0;
+                    border-top: 1px solid #f6f6f6;
+                    input {
+                        padding: 8px 10px;
+                        border: 1px solid #e7e7e7;
+                        border-radius: 4px;
+                        font-weight: 100;
+                        width: 100%;
+                        flex: 1;
+                        transition: all ease 0.3s;
+                        &:nth-child(2) {
+                            flex: 0.2;
+                            min-width: 80px;
+                            margin-right: 4px;
+                            margin-left: 4px;
+                        }
+                        &:focus {
+                            outline: 0;
+                            border-color: #454545;
+                        }
+                    }
+                }
+                .button-delete {
+                    position: absolute;
+                    top: 50%;
+                    right: 0.5rem;
+                    transform: translateY(-50%);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 4px;
+                    border-radius: 2px;
+                    background-color: $oc-gray-4;
+                    transition: all 0.3s;
+                    &:hover {
+                        cursor: pointer;
+                        background-color: $oc-red-3;
+                    }
+                }
+                .button-addup {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 8px;
+                    background-color: $oc-gray-1;
+                    border-radius: 4px;
+                    margin-top: 0.5rem;
+                    transition: all 0.3s;
+                    &:hover {
+                        cursor: pointer;
+                        background-color: $oc-gray-3;
+                    }
+                }
+            }
+            @include media('lg') {
+                flex: 7;
+            }
+            &:focus {
+                outline: 0;
+                border-color: #454545;
+            }
+        }
+        select {
+            margin-left: -8px;
+            background-color: white;
+        }
+        textarea {
+            line-height: 24px;
+            overflow: auto;
+            height: auto;
+        }
+        .readOnly {
+            border: none;
+        }
+        &--status {
+            .content {border: 0;}
+            input[type=checkbox]{
+                display: none;
+            }
+            
+            label {
+                cursor: pointer;
+                text-indent: -9999px;
+                width: 48px;
+                height: 24px;
+                background: grey;
+                display: block;
+                border-radius: 100px;
+                position: relative;
+            }
+            
+            label:after {
+                content: '';
+                position: absolute;
+                top: 3px;
+                left: 3px;
+                width: 18px;
+                height: 18px;
+                background: #fff;
+                border-radius: 90px;
+                transition: 0.3s;
+            }
+            
+            input:checked + label {
+                background: green;
+            }
+            
+            input:checked + label:after {
+                left: calc(100% - 3px);
+                transform: translateX(-100%);
+            }
+            
+            label:active:after {
+                width: 30px;
+            }
+        }
+        &--buttons {
+            flex: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            .btn-cancel-confirm {
+                margin-left: auto;
+            }
+            button {
+                color: white;
+                padding: 0.5rem 1.2rem;
+                border-radius: 4px;
+                &.disabled {
+                    background-color: $oc-gray-3 !important;
+                }
+            }
+            .btn-delete {background-color: red;}
+            .btn-cancel {
+                background-color: #454545;
+                margin-right: 1rem;
+            }
+            .btn-confirm {background-color: green;}
+        }
+    }
+
+    
+}

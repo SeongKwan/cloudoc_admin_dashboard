@@ -1,6 +1,16 @@
 .LayoutWithSidebar {
     position: relative;
+    .db-search-panel-container {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 40%;
+        height: 100vh;
+        background-color: rgba(red, 0.3);
+        z-index: 999999;
+    }
     .main-container {
+        min-height: 100vh;
         z-index: 9998;
         position: relative;
         padding-top: 6rem;
