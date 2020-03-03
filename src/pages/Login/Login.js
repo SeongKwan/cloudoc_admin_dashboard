@@ -16,9 +16,12 @@ const cx = classNames.bind(styles);
 @observer
 class Login extends Component {
   componentDidMount() {
-    const { rememberMe, rememberID } = this.props.login;
+    const { rememberMe, rememberID, maintainLoginState } = this.props.login;
     if ( rememberMe === null || rememberMe === undefined || rememberMe === '' ) {
       window.localStorage.setItem('rememberMe', 'false');
+    }
+    if (maintainLoginState === undefined || maintainLoginState === '' || maintainLoginState === null) {
+      window.localStorage.setItem('maintainLoginState', 'false')
     }
     if (rememberMe === "true") {
       if (rememberID !== null && rememberID !== undefined && rememberID !== '') {
@@ -41,6 +44,9 @@ class Login extends Component {
   }
   _handleChangeRememberMe = () => {
     this.props.login.changeRememberMe();
+  }
+  _handleChangeMaintainLoginState = () => {
+    this.props.login.changeMaintainLoginState();
   }
 
   _handleClick = (e) => {
@@ -72,7 +78,7 @@ class Login extends Component {
   render() {
     const { email, password } = this.props.login.inputValuesForLogin;
     const { noIdValue, noPasswordValue, inputError } = this.props.login.errorValues;
-    const { isLoading } = this.props.login;
+    const { isLoading, maintainLoginState } = this.props.login;
     let error = noIdValue || noPasswordValue || inputError;
     let remember = this.props.login.rememberMe === 'true';
 
@@ -129,6 +135,17 @@ class Login extends Component {
                           style={{marginRight: '0.4rem'}}
                       />
                       <label htmlFor="rememberMe">이메일 기억하기</label>
+                    </fieldset>
+                    <fieldset className={cx('maintainLoginState')}>
+                      <input 
+                          onChange={this._handleChangeMaintainLoginState}
+                          id="maintainLoginState"
+                          name="maintainLoginState"
+                          type="checkbox"
+                          checked={maintainLoginState === 'true'} 
+                          style={{marginRight: '0.4rem'}}
+                      />
+                      <label htmlFor="maintainLoginState">로그인 유지하기</label>
                     </fieldset>
                     {
                       error && 

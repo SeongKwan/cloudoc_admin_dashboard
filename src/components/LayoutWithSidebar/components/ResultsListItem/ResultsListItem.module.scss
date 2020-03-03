@@ -1,0 +1,15 @@
+.ResultsListItem {
+    position: fixed;
+    top: 0;
+    left: 401px;
+    width: 400px;
+    height: 100vh;
+    padding: 1.5rem;
+    background-color: rgba(rgb(75, 75, 75), 1);
+    overflow: scroll;
+    z-index: 999999;
+    @include media('lg') {
+        left: 301px;
+        width: 300px;
+    }
+}

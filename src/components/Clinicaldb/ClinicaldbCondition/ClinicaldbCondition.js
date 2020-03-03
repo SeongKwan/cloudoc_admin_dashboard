@@ -10,24 +10,29 @@ import { TiPlus, TiMinus } from "react-icons/ti";
 
 const cx = classNames.bind(styles);
 @withRouter
-@inject('condition', 'common', 'detailClinicaldb')
+@inject('condition', 'common', 'detailClinicaldb', 'clinicaldb', 'searchPanel')
 @observer
 class ClinicaldbCondition extends Component {
     componentDidMount() {
+        this.props.clinicaldb.loadReferences();
         if (!this.props.create) {
             this.props.condition.setEditableData(this.props.contents);
             this.props.condition.setStaticData(this.props.contents);
             this.props.condition.setStaticDetail(JSON.parse(JSON.stringify(this.props.contents.detail)));
+            this.props.condition.setStaticTeaching(JSON.parse(JSON.stringify(this.props.contents.teaching)));
+            this.props.condition.setStaticPathology(JSON.parse(JSON.stringify(this.props.contents.teaching)));
             this.props.condition.setEditableDetail(JSON.parse(JSON.stringify(this.props.contents.detail)));
+            this.props.condition.setEditableTeaching(JSON.parse(JSON.stringify(this.props.contents.teaching)));
+            this.props.condition.setEditablePathology(JSON.parse(JSON.stringify(this.props.contents.pathology)));
         }
         this.props.condition.loadConditions();
     }
     componentWillUnmount() {
         this.props.condition.clearStaticData();
         this.props.condition.clearEditableData();
-        // this.props.condition.clearFormula();
         this.props.detailClinicaldb.clearIsEditing();
         this.props.common.clearTextareaSettings();
+        this.props.condition.clearData();
     }
     handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,9 +46,9 @@ class ClinicaldbCondition extends Component {
         this.props.condition.handleChange(name, value);
     }
 
-    handleChangeDetail = (e) => {
+    handleChangeFunction = (e) => {
         const { name, value, dataset } = e.target;
-        this.props.condition.handleChangeDetail(dataset.index, name, value);
+        this.props.condition.handleChangeFunction(dataset.type, dataset.index, name, value)
     }
 
     _renderCategoryOption = () => {
@@ -61,6 +66,18 @@ class ClinicaldbCondition extends Component {
     handleDeleteDetail = (index) => {
         this.props.condition.deleteDetail(index);
     }
+    handleAddupTeaching = (e) => {
+        this.props.condition.addTeaching();
+    }
+    handleDeleteTeaching = (index) => {
+        this.props.condition.deleteTeaching(index);
+    }
+    handleAddupPathology = (e) => {
+        this.props.condition.addPathology();
+    }
+    handleDeletePathology = (index) => {
+        this.props.condition.deletePathology(index);
+    }
 
     _handleClickButton = (type) => {
         const { id } = this.props.match.params;
@@ -77,7 +94,7 @@ class ClinicaldbCondition extends Component {
                     .catch((error) => {
     
                     });
-                }
+                } else return false;
             }
             if (window.confirm('수정한 내용을 적용하시겠습니까?')) {
                 return this.props.condition.updateCondition(id)
@@ -91,7 +108,7 @@ class ClinicaldbCondition extends Component {
                     .catch((err) => {
                         console.log(err);
                     });
-            }
+            } else return false;
         }
         if (type === 'delete') {
             if (window.confirm('정말로 해당 진단정보를 삭제하시겠습니까?')) {
@@ -102,7 +119,7 @@ class ClinicaldbCondition extends Component {
                 .catch((error) => {
     
                 });
-            }
+            } else return false;
         }
     }
     
@@ -127,8 +144,14 @@ class ClinicaldbCondition extends Component {
             status,
             _id
         } = this.props.condition.editableData;
+        // const { editableDetail } = this.props.condition;
+        // const { editableTeaching } = this.props.condition;
         const { create } = this.props;
-        const { rows } = this.props.common.textareaSettings;
+        // const { rows } = this.props.common.textareaSettings;
+
+        // console.log(JSON.parse(JSON.stringify(editableDetail)))
+        console.log(JSON.parse(JSON.stringify(this.props.condition.editablePathology)))
+        // console.log(JSON.parse(JSON.stringify(editableTeaching)))
 
         if (this.props.isLoading) {
             return (
@@ -202,41 +225,193 @@ class ClinicaldbCondition extends Component {
                     <ul className={cx('content','detail')}>
                         {
                             this.props.condition.editableDetail.map((d, i) => {
-                                const { description, ref_id, ref_content} = d;
+                                const { description, ref_id} = d;
+                                
                                 return <li key={i}>
                                     <input 
+                                        required
                                         className={cx('')}
                                         autoComplete="off"
                                         data-index={i}
-                                        onChange={this.handleChangeDetail}
+                                        data-type="Detail"
+                                        onChange={this.handleChangeFunction}
                                         name="description"
                                         type="text" 
                                         value={description}
                                         placeholder="설명내용"
                                     />
-                                    <input 
-                                        className={cx('')}
-                                        autoComplete="off"
-                                        data-index={i}
-                                        onChange={this.handleChangeDetail}
-                                        name="ref_id"
-                                        type="text" 
-                                        value={ref_id}
-                                    />
-                                    <input 
-                                        className={cx('')}
-                                        autoComplete="off"
-                                        data-index={i}
-                                        onChange={this.handleChangeDetail}
-                                        name="ref_content"
-                                        type="text" 
-                                        value={ref_content}
-                                    />
+                                    
+                                    {
+                                        ref_id !== '' ? <>
+                                        <input 
+                                            required
+                                            className={cx('reference_id')}
+                                            autoComplete="off"
+                                            data-index={i}
+                                            readOnly
+                                            name="ref_id"
+                                            type="text" 
+                                            value={ref_id}
+                                            onClick={() => {
+                                            this.props.searchPanel.toggleListPanel();
+                                            this.props.searchPanel.setCurrentIndex(i);
+                                            this.props.searchPanel.setCurrentDataType('Detail')
+                                            }}
+                                        />
+                                        </>
+                                        : 
+                                        <button className={cx('add-ref')} onClick={() => {
+                                            console.log('index', i)
+                                            if (!this.props.searchPanel.openListPanel) {
+                                                this.props.searchPanel.toggleListPanel();
+                                                this.props.searchPanel.setCurrentIndex(i);
+                                                this.props.searchPanel.setCurrentDataType('Detail')
+                                            }
+                                        }}
+                                        >문헌추가</button>
+                                    }
                                     <div className={cx('button-delete')} onClick={() => {this.handleDeleteDetail(i)}}><TiMinus /></div>
                                 </li>
                             })
                         }
                         <div className={cx('button-addup')} onClick={this.handleAddupDetail}><TiPlus /></div>
+                    </ul>
+                </div>
+                <div className={cx('wrapper','wrapper--pathology')}>
+                    <div className={cx('title')}>관련기전</div>
+                    <ul className={cx('content','pathology')}>
+                        {
+                            this.props.condition.editablePathology.map((d, i) => {
+                                const { level1, level2, level3, ref_id} = d;
+                                
+                                return <li key={i}>
+                                    <input 
+                                        required
+                                        className={cx('')}
+                                        autoComplete="off"
+                                        data-index={i}
+                                        data-type="Pathology"
+                                        onChange={this.handleChangeFunction}
+                                        name="level1"
+                                        type="text" 
+                                        value={level1}
+                                        placeholder="1단계"
+                                    />
+                                    <input 
+                                        required
+                                        className={cx('')}
+                                        autoComplete="off"
+                                        data-index={i}
+                                        data-type="Pathology"
+                                        onChange={this.handleChangeFunction}
+                                        name="level2"
+                                        type="text" 
+                                        value={level2}
+                                        placeholder="2단계"
+                                    />
+                                    <input 
+                                        required
+                                        className={cx('')}
+                                        autoComplete="off"
+                                        data-index={i}
+                                        data-type="Pathology"
+                                        onChange={this.handleChangeFunction}
+                                        name="level3"
+                                        type="text" 
+                                        value={level3}
+                                        placeholder="3단계"
+                                    />
+                                    {
+                                        ref_id !== '' ? <>
+                                        <input 
+                                            required
+                                            className={cx('level')}
+                                            autoComplete="off"
+                                            data-index={i}
+                                            readOnly
+                                            name="ref_id"
+                                            type="text" 
+                                            value={ref_id}
+                                            onClick={() => {
+                                            this.props.searchPanel.toggleListPanel();
+                                            this.props.searchPanel.setCurrentIndex(i);
+                                            this.props.searchPanel.setCurrentDataType('Pathology')
+                                            }}
+                                        />
+                                        </>
+                                        : 
+                                        <button className={cx('add-ref')} onClick={() => {
+                                            
+                                            if (!this.props.searchPanel.openListPanel) {
+                                                this.props.searchPanel.toggleListPanel();
+                                                this.props.searchPanel.setCurrentIndex(i);
+                                                this.props.searchPanel.setCurrentDataType('Pathology')
+                                            }
+                                        }}
+                                        >문헌추가</button>
+                                    }
+                                    <div className={cx('button-delete')} onClick={() => {this.handleDeletePathology(i)}}><TiMinus /></div>
+                                </li>
+                            })
+                        }
+                        <div className={cx('button-addup')} onClick={this.handleAddupPathology}><TiPlus /></div>
+                    </ul>
+                </div>
+                <div className={cx('wrapper','wrapper--teaching')}>
+                    <div className={cx('title')}>환자지도</div>
+                    <ul className={cx('content','teaching')}>
+                        {
+                            this.props.condition.editableTeaching.map((d, i) => {
+                                const { description, ref_id} = d;
+                                
+                                return <li key={i}>
+                                    <input 
+                                        required
+                                        className={cx('')}
+                                        autoComplete="off"
+                                        data-index={i}
+                                        data-type="Teaching"
+                                        onChange={this.handleChangeFunction}
+                                        name="description"
+                                        type="text" 
+                                        value={description}
+                                        placeholder="지도내용"
+                                    />
+                                    
+                                    {
+                                        ref_id !== '' ? <>
+                                        <input 
+                                            required
+                                            className={cx('reference_id')}
+                                            autoComplete="off"
+                                            data-index={i}
+                                            readOnly
+                                            name="ref_id"
+                                            type="text" 
+                                            value={ref_id}
+                                            onClick={() => {
+                                            this.props.searchPanel.toggleListPanel();
+                                            this.props.searchPanel.setCurrentIndex(i);
+                                            this.props.searchPanel.setCurrentDataType('Teaching')
+                                            }}
+                                        />
+                                        </>
+                                        : 
+                                        <button className={cx('add-ref')} onClick={() => {
+                                            
+                                            if (!this.props.searchPanel.openListPanel) {
+                                                this.props.searchPanel.toggleListPanel();
+                                                this.props.searchPanel.setCurrentIndex(i);
+                                                this.props.searchPanel.setCurrentDataType('Teaching')
+                                            }
+                                        }}
+                                        >문헌추가</button>
+                                    }
+                                    <div className={cx('button-delete')} onClick={() => {this.handleDeleteTeaching(i)}}><TiMinus /></div>
+                                </li>
+                            })
+                        }
+                        <div className={cx('button-addup')} onClick={this.handleAddupTeaching}><TiPlus /></div>
                     </ul>
                 </div>
                 {/* <div className={cx('wrapper')}>

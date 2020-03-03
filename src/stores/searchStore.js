@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 
 class SearchStore {
     @observable keyword = {
+        searchPanel: '',
         clinicaldb: '',
         cases: ''
     };
@@ -12,6 +13,7 @@ class SearchStore {
 
     @action clearKeyword() {
         this.keyword = {
+            searchPanel: '',
             clinicaldb: '',
             cases: ''
         };

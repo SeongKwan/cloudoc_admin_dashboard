@@ -76,6 +76,16 @@ class ConditionStore {
     };
     @observable staticDetail = [];
     @observable editableDetail = [];
+    @observable staticTeaching = [];
+    @observable editableTeaching = [];
+    @observable staticPathology = [];
+    @observable editablePathology = [];
+    @observable staticSymptoms = [];
+    @observable editableSymptoms = [];
+    @observable staticLabs = [];
+    @observable editableLabs = [];
+    @observable staticDrugs = [];
+    @observable editableDrugs = [];
 
     @action setEditableData(contents) {
         const {
@@ -169,6 +179,38 @@ class ConditionStore {
         this.staticDetail = detail;
     }
 
+    @action setEditableTeaching(teaching) {
+        this.editableTeaching = teaching;
+    }
+    @action setStaticTeaching(teaching) {
+        this.staticTeaching = teaching;
+    }
+
+    @action setEditablePathology(pathology) {
+        this.editablePathology = pathology;
+    }
+    @action setStaticPathology(pathology) {
+        this.staticPathology = pathology;
+    }
+    @action setEditableSymptoms(symptoms) {
+        this.editableSymptoms = symptoms;
+    }
+    @action setStaticSymptoms(symptoms) {
+        this.staticSymptoms = symptoms;
+    }
+    @action setEditableLabs(labs) {
+        this.editableLabs = labs;
+    }
+    @action setStaticLabs(labs) {
+        this.staticLabs = labs;
+    }
+    @action setEditableDrugs(drugs) {
+        this.editableDrugs = drugs;
+    }
+    @action setStaticDrugs(drugs) {
+        this.staticDrugs = drugs;
+    }
+
     @action handleChange(key, value) {
         this.editableData[key] = value;
 
@@ -177,21 +219,28 @@ class ConditionStore {
         } else { detailClinicaldbStore.isEditing = true; }
     }
 
-    @action handleChangeDetail(index, key, value) {
-        this.editableDetail[index][key] = value;
-
-        let staticDetailLength = this.staticDetail.length;
-        let editableDetailLength = this.editableDetail.length;
+    @action handleChangeFunction(type, index, key, value) {
         
-        if ( staticDetailLength < editableDetailLength) {
+        let editableDataType = `editable${type}`;
+        let staticsDataType = `static${type}`;
+        let editable = this[editableDataType];
+        let statics = this[staticsDataType];
+
+        editable[+index][key] = value;
+        // this.editableDetail[+index][key] = value;
+
+        let staticLength = statics.length;
+        let editableLength = editable.length;
+        
+        if ( staticLength < editableLength) {
             return detailClinicaldbStore.isEditing = true;
         }
-        if ( staticDetailLength > editableDetailLength) {
+        if ( staticLength > editableLength) {
             return detailClinicaldbStore.isEditing = true;
         }
-        if ( staticDetailLength === editableDetailLength) {
+        if ( staticLength === editableLength) {
             
-            if (this.staticDetail[index][key] === value) {
+            if (statics[index][key] === value) {
                 return detailClinicaldbStore.isEditing = false;
             } else { return detailClinicaldbStore.isEditing = true; }
         }
@@ -233,7 +282,42 @@ class ConditionStore {
         } else {
             detailClinicaldbStore.isEditing = true;
         }
-        
+    }
+
+    @action addTeaching() {
+        this.editableTeaching = [...this.editableTeaching, {
+            description: '',
+            ref_id: '',
+            ref_content: ''
+        }];
+        let staticTeachingLength = this.staticTeaching.length;
+        let editableTeachingLength = this.editableTeaching.length;
+        if ( staticTeachingLength === editableTeachingLength) {
+            if (this._compareArray()) {
+                detailClinicaldbStore.isEditing = false;
+            } else detailClinicaldbStore.isEditing = true;
+        } else {
+            detailClinicaldbStore.isEditing = true;
+        }
+    }
+
+    @action addPathology() {
+        this.editablePathology = [...this.editablePathology, {
+            level1: '',
+            level2: '',
+            level3: '',
+            ref_id: '',
+            ref_content: ''
+        }];
+        let staticPathologyLength = this.staticPathology.length;
+        let editablePathologyLength = this.editablePathology.length;
+        if ( staticPathologyLength === editablePathologyLength) {
+            if (this._compareArray()) {
+                detailClinicaldbStore.isEditing = false;
+            } else detailClinicaldbStore.isEditing = true;
+        } else {
+            detailClinicaldbStore.isEditing = true;
+        }
     }
 
     @action deleteDetail(selectedIndex) {
@@ -242,6 +326,50 @@ class ConditionStore {
             detailClinicaldbStore.isEditing = false;
         } else detailClinicaldbStore.isEditing = true;
     }
+
+    @action deleteTeaching(selectedIndex) {
+        this.editableTeaching.splice(selectedIndex, 1);
+        if (this._compareArray()) {
+            detailClinicaldbStore.isEditing = false;
+        } else detailClinicaldbStore.isEditing = true;
+    }
+    @action deletePathology(selectedIndex) {
+        this.editablePathology.splice(selectedIndex, 1);
+        if (this._compareArray()) {
+            detailClinicaldbStore.isEditing = false;
+        } else detailClinicaldbStore.isEditing = true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @action loadConditions() {
         this.isLoading = true;
@@ -389,9 +517,19 @@ class ConditionStore {
             _id: ''
         }
     }
-    @action clearFormula() {
-        this.editableFormula = [];
-        this.staticFormula = [];
+    @action clearData() {
+        this.staticDetail = [];
+        this.editableDetail = [];
+        this.staticTeaching = [];
+        this.editableTeaching = [];
+        this.staticPathology = [];
+        this.editablePathology = [];
+        this.staticSymptoms = [];
+        this.editableSymptoms = [];
+        this.staticLabs = [];
+        this.editableLabs = [];
+        this.staticDrugs = [];
+        this.editableDrugs = [];
     }
 
 }

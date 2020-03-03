@@ -18,6 +18,7 @@ class LoginStore {
     };
     @observable rememberMe = window.localStorage.getItem('rememberMe');
     @observable rememberID = window.localStorage.getItem('rememberID');
+    @observable maintainLoginState = window.localStorage.getItem('maintainLoginState');
 
     constructor() {
         this._initRememberMeID();
@@ -42,6 +43,16 @@ class LoginStore {
                 }
             }
         );
+        reaction(
+            () => this.maintainLoginState,
+            maintainLoginState => {
+                if (maintainLoginState) {
+                    window.localStorage.setItem('maintainLoginState', maintainLoginState);
+                } else {
+                    window.localStorage.removeItem('maintainLoginState');
+                }
+            }
+        );
     }
     
     @computed get isLoggedIn() {
@@ -59,10 +70,16 @@ class LoginStore {
         if (this.rememberMe) {
             this.setRememberMeID(this.rememberMe);
         }
+        if (this.maintainLoginState) {
+            this.setMaintainLoginState(this.maintainLoginState)
+        }
     }
 
     @action setRememberMeID(rememberMe) {
         this.rememberMe = rememberMe;
+    }
+    @action setMaintainLoginState(maintainLoginState) {
+        this.maintainLoginState = maintainLoginState;
     }
     
     @action changeRememberMe() {
@@ -82,9 +99,21 @@ class LoginStore {
             return this.destroyRememberID();
         }
     }
+    @action changeMaintainLoginState() {
+        if (this.maintainLoginState === 'true') {
+            this.destroyMaintainLoginState();
+            return this.maintainLoginState = 'false';
+        }
+        if (this.maintainLoginState === 'false') {
+            return this.maintainLoginState = 'true';
+        }
+    }
 
     @action destroyRememberID() {
         this.rememberID = undefined;
+    }
+    @action destroyMaintainLoginState() {
+        this.maintainLoginState = undefined;
     }
 
     @action changeInput(key, value) {
@@ -118,7 +147,7 @@ class LoginStore {
     @action login() {
         this.isLoading = true;
         const { email, password } = this.inputValuesForLogin;
-        return agent.login({email, password})
+        return agent.login({email, password, maintainLoginState: this.maintainLoginState === 'true'})
         .then(action((res) => {
             let { 
                 token,

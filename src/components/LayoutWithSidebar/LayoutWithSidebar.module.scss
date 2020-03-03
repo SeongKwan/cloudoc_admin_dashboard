@@ -3,11 +3,30 @@
     .db-search-panel-container {
         position: fixed;
         top: 0;
-        right: 0;
-        width: 40%;
+        left: 0;
+        width: 400px;
         height: 100vh;
-        background-color: rgba(red, 0.3);
+        padding: 1.5rem;
+        background-color: rgba(rgb(75, 75, 75), 1);
         z-index: 999999;
+        @include media('lg') {
+            width: 300px;
+        }
+        h3 {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            color: white;
+            position: relative;
+            span {
+                position: absolute;
+                top: 50%;
+                right: 0px;
+                padding: 4px 0;
+                cursor: pointer;
+                transform: translateY(-50%);
+            }
+        }
     }
     .main-container {
         min-height: 100vh;

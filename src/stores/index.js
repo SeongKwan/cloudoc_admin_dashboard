@@ -16,6 +16,7 @@ import reference from './referenceStore';
 import drug from './drugStore';
 import condition from './conditionStore';
 import createClinicaldb from './createClinicaldbStore';
+import searchPanel from './searchPanelStore';
 
 const stores = {
     auth,
@@ -35,7 +36,8 @@ const stores = {
     exam,
     reference,
     drug,
-    condition
+    condition,
+    searchPanel
 }
 
 export default stores;

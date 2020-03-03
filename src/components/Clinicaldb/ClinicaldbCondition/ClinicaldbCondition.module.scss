@@ -1,6 +1,6 @@
 .ClinicaldbCondition {
     @include layout;
-    width: 100%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,7 +29,7 @@
             width: 100%;
             flex: 8;
             transition: all ease 0.3s;
-            &.detail {
+            &.detail, &.teaching, &.pathology {
                 display: flex;
                 flex-direction: column;
                 ul {
@@ -58,6 +58,24 @@
                             outline: 0;
                             border-color: #454545;
                         }
+                        &.reference_id {
+                            cursor: pointer;
+                        }
+                    }
+                    button.add-ref {
+                        text-align: left;
+                        padding: 8px 10px;
+                        border: 1px solid #e7e7e7;
+                        border-radius: 4px;
+                        font-weight: 100;
+                        width: 100%;
+                        flex: 0.3;
+                        margin-left: 2px;
+                        cursor: pointer;
+                        &:active, &:focus {
+                            outline: 0;
+                            border-color: #454545;
+                        }
                     }
                 }
                 .button-delete {
@@ -70,7 +88,7 @@
                     align-items: center;
                     padding: 4px;
                     border-radius: 2px;
-                    background-color: $oc-gray-4;
+                    // background-color: $oc-gray-4;
                     transition: all 0.3s;
                     &:hover {
                         cursor: pointer;

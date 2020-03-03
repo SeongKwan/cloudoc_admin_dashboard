@@ -28,9 +28,9 @@ class Agent {
             .catch(this._handleError);
     }
 
-    login({email, password}) {
+    login({email, password, maintainLoginState}) {
         return this.axios
-                .post('/auth/login', {email, password}, { 
+                .post('/auth/login', {email, password, maintainLoginState}, { 
                     baseURL: API_ROOT,
                     headers: { 
                         
@@ -285,10 +285,11 @@ class Agent {
     _handleError(error) {
         let type = '';
         const { inLoggedIn } = loginStore;
+
         if (error.response) {
             type = error.response.data.type;
             if (!window.navigator.onLine) {
-                alert('오프라인 상태입니다')
+                alert('오프라인 상태입니다');
             } else {
                 if (Boolean(error.response.data.type) === true) {
                     if (type === "expired" || type === "refresh" || type === "error") {

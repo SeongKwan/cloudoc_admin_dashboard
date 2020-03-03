@@ -74,6 +74,7 @@ class TableBoard extends Component {
                         type="text" 
                         onChange={this.handleOnChange} 
                         onKeyDown={(e) => {
+                            console.log('121212')
                             if (e.keyCode === 13) {
                                 this.handleOnClick();
                             }

@@ -61,7 +61,7 @@ class ClinicaldbReference extends Component {
                     .catch((error) => {
     
                     });
-                }
+                } else return false;
             }
             if (window.confirm('수정한 내용을 적용하시겠습니까?')) {
                 return this.props.reference.updateReference(id)
@@ -75,7 +75,7 @@ class ClinicaldbReference extends Component {
                     .catch((err) => {
                         console.log(err);
                     });
-            }
+            } else return false;
         }
         if (type === 'delete') {
             if (window.confirm('정말로 해당 문헌정보를 삭제하시겠습니까?')) {
@@ -86,7 +86,7 @@ class ClinicaldbReference extends Component {
                 .catch((error) => {
     
                 });
-            }
+            } else return false;
         }
     }
     render() {

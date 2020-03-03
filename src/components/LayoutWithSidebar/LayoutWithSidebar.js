@@ -5,7 +5,10 @@ import styles from './LayoutWithSidebar.module.scss';
 import classNames from 'classnames/bind';
 import { NavLink, withRouter } from 'react-router-dom';
 import LogoBlack from '../../styles/img/logo_main_bk.png';
-import { FiUsers, FiFileText, FiHelpCircle, FiBook, FiInfo, FiUser, FiChevronDown, FiChevronUp, FiLogOut } from "react-icons/fi";
+import { FiX, FiUsers, FiFileText, FiHelpCircle, FiBook, FiInfo, FiUser, FiChevronDown, FiChevronUp, FiLogOut } from "react-icons/fi";
+import SearchBar from './components/SearchBar';
+import ResultsList from './components/ResultsList/ResultsList';
+import ResultsListItem from './components/ResultsListItem/ResultsListItem';
 
 const cx = classNames.bind(styles);
 const menus = [
@@ -16,12 +19,14 @@ const menus = [
   {title: '문의내역', url: `/cs`, icon: <FiHelpCircle />},
 ];
 let timer = null;
+
 @withRouter
 @inject(
   'auth',
   'Case',
   'login',
   'user', 
+  'searchPanel'
 )
 @observer
 class LayoutWithSidebar extends Component {
@@ -54,15 +59,29 @@ class LayoutWithSidebar extends Component {
   toggleDropdown = () => {
     this.setState({openDropdown: !this.state.openDropdown});
   }
+  
   render() {
     const { children } = this.props;
     const category = this.props.location.pathname.split("/")[1];
     
     return (
       <div className={cx('LayoutWithSidebar')}>
-        {/* <div className={cx('db-search-panel-container')}>
-          
-        </div> */}
+          {/* 1 && */}
+        {
+        this.props.searchPanel.openListPanel &&
+          <div
+            id="SearchPanelContainer"
+            className={cx('db-search-panel-container')}
+          >
+            <h3>참조 문헌 검색 <span onClick={() => {this.props.searchPanel.clear();}}><FiX /></span></h3>
+            <SearchBar />
+            <ResultsList />
+          </div>
+        }
+        {/* {1 &&  */}
+        {this.props.searchPanel.openListItemPanel && 
+          <ResultsListItem />
+        }
         <div className={cx('sidebar-container')}>
           <div>
             <div className={cx('brand-logo')}>
