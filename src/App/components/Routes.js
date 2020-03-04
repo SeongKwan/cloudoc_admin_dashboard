@@ -27,26 +27,26 @@ const Routes = () => {
                 <Route component={Page404} />
                 </Switch>
             </MobileView> */}
-            <BrowserView>
-                <Switch>
-                    <Route exact path="/">
-                        <Redirect to="/clinicaldb" />
-                    </Route>
-                    <Route exact path="/clinicaldb">
-                        <ClinicalDB />
-                    </Route>
-                    <Route path="/clinicaldb/create">
-                        <CreateClinicaldb />
-                    </Route>
-                    <Route path={`/clinicaldb/:section/:id`}>
-                        <DetailClinicaldb />
-                    </Route>
-                    <Route>
-                        <Page404 />
-                    </Route>
-                    
-                </Switch>
-            </BrowserView>
+            <Switch>
+                <Route exact path="/">
+                    <Redirect to="/clinicaldb" />
+                </Route>
+                <Route exact path="/clinicaldb">
+                    <ClinicalDB />
+                </Route>
+                <Route path="/clinicaldb/create">
+                    <CreateClinicaldb />
+                </Route>
+                <Route path={`/clinicaldb/:section/:id`}>
+                    <DetailClinicaldb />
+                </Route>
+                <Route>
+                    <Page404 />
+                </Route>
+                
+            </Switch>
+            {/* <BrowserView>
+            </BrowserView> */}
         </>
     );
 };
